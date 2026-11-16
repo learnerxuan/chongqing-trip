@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>重庆山城之旅 · 8天7晚家庭地图导览 | Chongqing Travel Companion</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- PWA & Mobile App Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#09090b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="重庆旅游地图">
+
+  <script>
+    // Force cache invalidation to ensure user sees the new mobile view switcher immediately
+    const APP_BUILD_VER = '20261116_v31_mobile_list_map_toggle';
+    if (localStorage.getItem('cq_trip_build') !== APP_BUILD_VER) {
+      localStorage.setItem('cq_trip_build', APP_BUILD_VER);
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          for (let name of names) caches.delete(name);
+        });
+      }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          for (let reg of regs) reg.unregister();
+        });
+      }
+    }
+  </script>
+
+  <!-- Clean Custom Design System -->
+  <link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+
+  <!-- Top App Navigation Bar -->
+  <header class="site-header">
+    <div class="brand-wrapper">
+      <div class="brand-monogram">渝</div>
+      <div class="brand-text">
+        <h1>
+          重庆山城之旅
+          <span class="trip-dates">12/21 – 12/28 · 8天7晚</span>
+        </h1>
+        <div class="subtext">全家游重庆专属地图导览 · 27 大精选站点距离与全闭环顺路规划</div>
+      </div>
+    </div>
+
+    <!-- Center Scope Switcher -->
+    <div class="header-scope-toggle">
+      <button class="scope-pill active" id="btnScopeUrban" title="聚焦主城半岛 (解放碑、洪崖洞、十八梯、李子坝、索道、三峡博物馆)">
+        <span>主城半岛 (1-15 km)</span>
+      </button>
+      <button class="scope-pill" id="btnScopeMacro" title="显示重庆全域大格局 (含主城核心圈与武隆 195km)">
+        <span>重庆全域宏观</span>
+      </button>
+    </div>
+
+    <!-- Right Header Tools -->
+    <div class="header-tools">
+      <button class="tool-btn hotel-pill-btn" id="btnOpenHotelModal" title="查看入住酒店 · 扬际·创汇酒店 (7晚大本营)">
+        <span class="hotel-pill-icon">🏨</span>
+        <span class="btn-label">扬际·创汇酒店</span>
+      </button>
+
+      <button class="tool-btn highlight" id="btnForceReload" onclick="window.forceCleanReload && window.forceCleanReload()" title="如页面未显示最新站点，点击清除缓存并刷新">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <span class="btn-label">刷新最新27站</span>
+      </button>
+
+      <button class="tool-btn" id="btnOpenDistanceModal" title="查看全部景点间距离与跨区矩阵">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>
+        <span class="btn-label">距离透视</span>
+      </button>
+
+      <button class="tool-btn highlight" id="btnOpenMomGuide" title="专为全家出行定制的防陡坡与舒适指南">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <span class="btn-label">家庭贴士</span>
+      </button>
+
+      <button class="tool-btn primary" id="btnLocateMe" title="开启 GPS 实时定位，显示你在地图上的当前位置">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        <span class="btn-label">我的定位</span>
+      </button>
+
+      <button class="tool-btn" id="btnMobileSidebarToggle" style="display:none;" title="展开/收起行程列表">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive Date Ribbon -->
+  <nav class="ribbon-container" id="daysRibbon">
+    <!-- Populated dynamically by app.js -->
+  </nav>
+
+  <!-- Mobile View Mode Switcher (List Cards vs Map) -->
+  <div class="mobile-view-tabs" id="mobileViewTabs">
+    <button class="mobile-tab-btn active" id="tabMobileList">
+      <span class="tab-icon">📋</span>
+      <span class="tab-text">当天行程卡片</span>
+      <span class="tab-badge" id="mobileStopsCountBadge">3站</span>
+    </button>
+    <button class="mobile-tab-btn" id="tabMobileMap">
+      <span class="tab-icon">🗺️</span>
+      <span class="tab-text">路线地图</span>
+    </button>
+  </div>
+
+  <!-- Main Split Layout -->
+  <main class="app-content">
+
+    <!-- Floating View Switcher Pill for Mobile -->
+    <button class="floating-view-pill" id="btnFloatingViewSwitch" title="在行程列表与路线地图间切换">
+      <span class="floating-pill-icon" id="floatingPillIcon">🗺️</span>
+      <span class="floating-pill-text" id="floatingPillText">看路线地图</span>
+    </button>
+    
+    <!-- Left Sidebar: Itinerary & Timeline -->
+    <aside class="sidebar-panel" id="itinerarySidebar">
+      <!-- Permanent Hotel Basecamp Dock Card (Always Visible) -->
+      <div class="permanent-hotel-dock" id="permanentHotelDock">
+        <div class="dock-badge-row">
+          <span class="dock-badge">
+            <span class="dock-live-dot"></span>
+            全家7晚大本营
+          </span>
+          <span class="dock-sub-tag">中华路1号 · 较场口站10A</span>
+        </div>
+        <div class="dock-hotel-name">扬际·创汇酒店（重庆解放碑店）</div>
+        <div class="dock-hotel-addr" title="酒店常驻地址，点击可复制">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="dock-addr-text">渝中区中华路1号创汇首座L1层</span>
+        </div>
+        <div class="dock-actions-row">
+          <button class="dock-action-btn copy" id="btnDockCopyAddr" title="复制精准打车地址">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>复制打车地址</span>
+          </button>
+          <button class="dock-action-btn locate" id="btnDockLocate" title="地图对焦到酒店位置">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/></svg>
+            <span>地图对焦</span>
+          </button>
+          <button class="dock-action-btn info" id="btnDockDetails" title="查看完整预订与周边距离">
+            <span>预订详情 ➔</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Day Summary Header Card -->
+      <div class="sidebar-header-box" id="sidebarDaySummary">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Stop Cards Scrollable List -->
+      <div class="timeline-scroll" id="sidebarStopList">
+        <!-- Rendered by app.js -->
+      </div>
+    </aside>
+
+    <!-- Right Map Canvas Area -->
+    <section class="map-canvas-container">
+      <div id="map"></div>
+
+      <!-- Floating Map Layer & Scope Controls (Top Left) -->
+      <div class="map-controls-floating">
+        <button class="map-control-chip active" id="btnTileStreet" title="开源矢量街道图 (全覆盖无缺失)">
+          <span>街道地图</span>
+        </button>
+        <button class="map-control-chip" id="btnTileSatellite" title="高清卫星实景地形图">
+          <span>卫星实景</span>
+        </button>
+        <button class="map-control-chip" id="btnTileTopo" title="山地等高线地形图">
+          <span>山地地形</span>
+        </button>
+      </div>
+
+      <!-- Floating Route Info HUD (Top Right) -->
+      <div class="map-stats-hud" id="mapRouteHud">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Details Slide-Over Drawer -->
+    <div class="drawer-scrim" id="drawerScrim"></div>
+    <div class="slide-drawer" id="detailsDrawer">
+      
+      <!-- Drawer Hero Image -->
+      <div class="drawer-hero">
+        <img id="drawerImg" src="images/stop_01.jpg" alt="景点实拍">
+        <div class="drawer-hero-scrim">
+          <div class="drawer-chip-row">
+            <span class="drawer-index-chip" id="drawerPageBadge">Slide 01/19</span>
+            <span style="font-size:0.75rem; color:#e4e4e7;" id="drawerDayCategoryBadge">商圈地标</span>
+          </div>
+          <h2 class="drawer-main-title" id="drawerTitle">解放碑步行街</h2>
+          <div class="drawer-sub-title" id="drawerTitleEn">Jiefangbei Pedestrian Street</div>
+        </div>
+        <button class="drawer-close-icon" id="drawerCloseBtn" onclick="window.closeDrawer && window.closeDrawer()" title="关闭详情" aria-label="关闭详情">✕</button>
+      </div>
+
+      <!-- Drawer Content Scroll Area -->
+      <div class="drawer-scroll-body">
+        
+        <!-- Time & Elevation Meta -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#f4f4f5; padding:10px 14px; border-radius:8px; border:1px solid #e4e4e7;">
+          <div>
+            <span style="font-size:0.72rem; color:#71717a; text-transform:uppercase; font-weight:600;">游览建议时间</span>
+            <div style="font-size:0.86rem; font-weight:700; color:#18181b;" id="drawerTimeVal">18:00–19:00</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:0.72rem; color:#71717a; text-transform:uppercase; font-weight:600;">地势与海拔</span>
+            <div style="font-size:0.82rem; font-weight:600; color:#27272a;" id="drawerElevationVal">250m</div>
+          </div>
+        </div>
+
+        <!-- Hotel Distance & Commute Card (Always Visible) -->
+        <div class="drawer-hotel-commute-card">
+          <div class="dhc-header">
+            <div class="dhc-title">
+              <span class="dhc-icon">🏨</span>
+              <span>距大本营酒店往返距离与方案</span>
+            </div>
+            <span class="dhc-badge">7晚常驻大本营</span>
+          </div>
+          <div class="dhc-stats">
+            <div class="dhc-stat-main">
+              <span class="dhc-dist-val" id="drawerHotelDistVal">约 350 米</span>
+              <span class="dhc-transit-val" id="drawerHotelTransitVal">步行约 4 分钟</span>
+            </div>
+            <div class="dhc-note" id="drawerHotelNoteVal">商圈平坦大道直达，无台阶陡坡</div>
+          </div>
+          <div class="dhc-address-row" id="drawerHotelAddrClick" title="点击复制酒店打车地址">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>扬际·创汇酒店：重庆市渝中区中华路1号创汇首座L1层 (点击复制)</span>
+          </div>
+        </div>
+
+        <!-- 1. What to See & Do -->
+        <div class="info-section-card">
+          <div class="section-label">
+            <span class="indicator-dot"></span>
+            <span>核心看点与机位 · What to See</span>
+          </div>
+          <div class="section-body-text" id="drawerSeeVal"></div>
+        </div>
+
+        <!-- 2. What to Eat -->
+        <div class="info-section-card food-highlight">
+          <div class="section-label">
+            <span class="indicator-dot"></span>
+            <span>地道美食与长辈适口推荐 · What to Eat</span>
+          </div>
+          <div class="section-body-text" id="drawerEatVal"></div>
+        </div>
+
+        <!-- 3. How to Get There & Transit -->
+        <div class="info-section-card">
+          <div class="section-label">
+            <span class="indicator-dot"></span>
+            <span>交通方案与省力路线 · How to Get There</span>
+          </div>
+          <div class="section-body-text" id="drawerTransportVal"></div>
+        </div>
+
+        <!-- 4. Family Travel Tips -->
+        <div class="info-section-card mom-highlight">
+          <div class="section-label">
+            <span class="indicator-dot"></span>
+            <span>全家出行贴士 · Family Travel Tips</span>
+          </div>
+          <div class="section-body-text" id="drawerMomTipsVal"></div>
+        </div>
+
+        <!-- Photo Credit -->
+        <div style="font-size: 0.72rem; color: #a1a1aa; text-align: center; margin-top: 4px;" id="drawerCreditVal">
+          实拍来源：参考照片
+        </div>
+
+      </div>
+
+      <!-- Drawer Bottom Sticky Action Bar -->
+      <div class="drawer-footer-actions">
+        <button class="action-btn" id="btnPrevStop">
+          <span>上一站</span>
+        </button>
+        <button class="action-btn primary" id="btnCopyDidi">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span>复制打车地址</span>
+        </button>
+        <a class="action-btn" id="btnOpenNav" target="_blank" rel="noopener noreferrer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          <span>导航</span>
+        </a>
+        <button class="action-btn" id="btnNextStop">
+          <span>下一站</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Distance Matrix Modal -->
+  <div class="modal-scrim" id="distanceModal">
+    <div class="modal-sheet">
+      <div class="modal-sheet-header">
+        <div class="modal-sheet-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          <span>全行程距离与跨区空间透视 (Distance Overview)</span>
+        </div>
+        <button class="modal-close-trigger">✕</button>
+      </div>
+      <div class="modal-sheet-content">
+        <p style="margin-bottom: 14px; color: #52525b;">
+          重庆市域面积相当于一个省，初看攻略很容易混淆“市内溜达”与“出城远郊”。我们将行程明确梳理为<strong>三大空间尺度</strong>：
+        </p>
+
+        <div class="spatial-zones-grid">
+          <div class="zone-card" style="border-left: 3px solid #0284c7;">
+            <div class="zone-card-title">🏙️ 主城核心半岛圈</div>
+            <div class="zone-card-desc">
+              <strong>Days 1, 2, 6, 7, 8</strong><br>
+              解放碑、十八梯、洪崖洞、朝天门、索道、李子坝、磁器口。<br>
+              <span style="color:#0284c7; font-weight:600;">各点相距 0.3km - 15km | 滴滴10-30分钟</span>
+            </div>
+          </div>
+
+          <div class="zone-card" style="border-left: 3px solid #d97706;">
+            <div class="zone-card-title">🏛️ 母城文博与最美街区一日游</div>
+            <div class="zone-card-desc">
+              <strong>Day 3 (人民大礼堂 · 三峡博物馆 · 中山四路)</strong><br>
+              渝中母城核心圈，大礼堂平地合影，三峡博物馆室内恒温，古树林荫道慢生活。<br>
+              <span style="color:#d97706; font-weight:600;">单程仅 3.5 km (滴滴10分钟) | 全室内暖气+直梯·零爬坡负担</span>
+            </div>
+          </div>
+
+          <div class="zone-card" style="border-left: 3px solid #059669;">
+            <div class="zone-card-title">❄️ 东南喀斯特雪山仙境</div>
+            <div class="zone-card-desc">
+              <strong>Days 4 - 5 (武隆仙女山滑雪)</strong><br>
+              沿乌江峡谷盘升至海拔1,900米高山雪原。<br>
+              <span style="color:#059669; font-weight:600;">单程 195 km (车程3.5-4小时) | 宿高山度假酒店</span>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="font-size:0.92rem; font-weight:800; color:#18181b; margin-top:16px;">19个站点逐段实测距离与耗时对照表</h4>
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>行程站点</th>
+                <th>下一目的地</th>
+                <th>实测路程</th>
+                <th>交通方式</th>
+                <th>长辈省力建议</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Day 1</strong></td>
+                <td>01. 解放碑步行街</td>
+                <td>02. 火锅晚餐</td>
+                <td>~300 米</td>
+                <td>步行 3-5 分钟</td>
+                <td>平坦商圈，无阶梯</td>
+              </tr>
+              <tr>
+                <td><strong>Day 2</strong></td>
+                <td>03. 十八梯传统风貌区</td>
+                <td>04. 湖广会馆</td>
+                <td>3.5 km</td>
+                <td>滴滴 15-20 分钟</td>
+                <td>从较场口入口顺坡向下到底部打车</td>
+              </tr>
+              <tr>
+                <td><strong>Day 2</strong></td>
+                <td>04. 湖广会馆</td>
+                <td>05. 朝天门来福士</td>
+                <td>2.2 km</td>
+                <td>滴滴 10-15 分钟</td>
+                <td>直达商场落客区，乘电梯观江景</td>
+              </tr>
+              <tr>
+                <td><strong>Day 2</strong></td>
+                <td>05. 朝天门来福士</td>
+                <td>06. 洪崖洞夜景</td>
+                <td>2.5 km</td>
+                <td>滴滴 10-15 分钟</td>
+                <td>千厮门大桥/对岸远眺，严禁挤楼内楼梯</td>
+              </tr>
+              <tr>
+                <td><strong>Day 3</strong></td>
+                <td>07. 前往大足石刻</td>
+                <td>08. 宝顶山石刻造像</td>
+                <td>125 km</td>
+                <td>商务包车 2.5小时</td>
+                <td>中途高速服务区休整，园区电瓶车直达</td>
+              </tr>
+              <tr>
+                <td><strong>Day 4</strong></td>
+                <td>09. 重庆前往仙女山</td>
+                <td>10. 仙女山滑雪 Day 1</td>
+                <td>195 km</td>
+                <td>包车直达 3.5-4 小时</td>
+                <td>海拔1900m温差大，穿防滑羽绒雪地靴</td>
+              </tr>
+              <tr>
+                <td><strong>Day 5</strong></td>
+                <td>11. 仙女山滑雪 Day 2</td>
+                <td>12. 森林草原小火车</td>
+                <td>3.2 km</td>
+                <td>景区观光车 10 分钟</td>
+                <td>乘复古小火车全程坐观雾凇雪原</td>
+              </tr>
+              <tr>
+                <td><strong>Day 5</strong></td>
+                <td>12. 仙女山草原</td>
+                <td>返程主城酒店</td>
+                <td>195 km</td>
+                <td>包车高速 3.5 小时</td>
+                <td>15:00准时返程，车上午休回城吃大餐</td>
+              </tr>
+              <tr>
+                <td><strong>Day 6</strong></td>
+                <td>13. 李子坝轻轨穿楼</td>
+                <td>14. 磁器口古镇</td>
+                <td>13.5 km</td>
+                <td>滴滴打车 30 分钟</td>
+                <td>免去地铁站内上下换乘多层楼梯</td>
+              </tr>
+              <tr>
+                <td><strong>Day 7</strong></td>
+                <td>15. 长江索道</td>
+                <td>16. 龙门浩·下浩里</td>
+                <td>1.2 km</td>
+                <td>短途打车 4 分钟</td>
+                <td>索道提前手机预约取号免排长队</td>
+              </tr>
+              <tr>
+                <td><strong>Day 7</strong></td>
+                <td>16. 下浩里老街</td>
+                <td>17. 南滨路江景晚餐</td>
+                <td>1.5 km</td>
+                <td>滴滴 5-8 分钟</td>
+                <td>提前订靠窗位，平整滨江栈道散步</td>
+              </tr>
+              <tr>
+                <td><strong>Day 8</strong></td>
+                <td>26. 朝天门广场 · 两江交汇</td>
+                <td>27. 江北机场 T3 航站楼</td>
+                <td>25 km</td>
+                <td>滴滴专车 35-40 分钟</td>
+                <td>来福士全平地观两江汇流，提前3小时到T3</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Family Care Guide Modal -->
+  <div class="modal-scrim" id="momGuideModal">
+    <div class="modal-sheet">
+      <div class="modal-sheet-header">
+        <div class="modal-sheet-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>全家游重庆 · 8大黄金省力与避坑法则 (Family Travel Guide)</span>
+        </div>
+        <button class="modal-close-trigger">✕</button>
+      </div>
+      <div class="modal-sheet-content">
+        
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">1. 十八梯必须“从上往下逛”，绝不从下往上爬！</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              十八梯垂直高差达50米。导航务必定位【较场口入口】（上半城），由上而下顺坡漫步极其轻松；逛到底部直接叫滴滴去湖广会馆，千万别走回头路往上爬。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">2. 洪崖洞千人避坑：全家出行严禁挤内部狭窄楼梯！</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              洪崖洞内部11层昏暗拥挤、排队乘电梯极费时间。最佳观赏方式是：站在【嘉滨路马路对面滨江步道】仰拍全景，或者漫步【千厮门大桥平坦人行道】俯瞰。拍照宏伟又免受挤压。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">3. 火锅务必点“鸳鸯锅”，交代服务员“微辣微微辣”</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              清汤选滋补骨汤或菌菇汤；油碟倒满纯芝麻香油，香油不仅降温防烫，还能有效保护胃黏膜减轻辣椒刺激；准备一杯温热唯怡豆奶或温开水解腻。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">4. 仙女山高山雪原防寒与防滑黄金装备</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              仙女山海拔近2000米，冬季常有零下气温与积雪。备好长款羽绒服、保暖防风裤、防滑纹路雪地靴、护耳毛线帽与墨镜（防止雪地强光反射）。滑雪场给长辈和家人选平缓安全的【雪上飞碟（雪圈）】，坐着滑下欢声笑语又不费膝盖！
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">5. 4人家庭出行：滴滴/包车性价比远胜地铁！</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              重庆地铁站埋深极深（部分站达几十米地底），换乘站内经常要走成百上千级台阶。4人出行打滴滴费用与地铁相近，却能点对点直达目的地门前，节省全家体力。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">6. 大足石刻务必租用【语音导览器】并坐电瓶车</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              大足石刻是一部雕刻在岩石上的宋代百科全书。光看造像无法领会精妙，听着讲解器里的佛经与劝善典故，全家老小都会看得津津有味、印象深刻。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">7. 长江索道提前手机预约排队，享半价长者优惠</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              提前在微信小程序【重庆长江索道】实名预约购票，避免现场排队一两个小时。60岁以上长辈持身份证享优惠票。车厢平稳，靠近窗边拍照极佳。
+            </div>
+          </div>
+
+          <div style="background:#f4f4f5; border-left:3px solid #e11d48; padding:12px 16px; border-radius:0 8px 8px 0;">
+            <div style="font-weight:700; color:#18181b;">8. 江北机场T3航站楼免费申请【爱心轮椅服务】</div>
+            <div style="font-size:0.83rem; color:#52525b; margin-top:3px;">
+              国际航线提前3小时到机场。江北T3航站楼面积巨大，若同行长辈腿脚疲劳，在航空公司值机柜台出示老人身份证即可免费申请地勤爱心轮椅，走绿色通道直达登机口。
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmed Hotel Basecamp Modal -->
+  <div class="modal-scrim" id="hotelModal">
+    <div class="modal-sheet" style="max-width: 660px;">
+      <div class="modal-sheet-header">
+        <div class="modal-sheet-title">
+          <span style="font-size: 1.25rem;">🏨</span>
+          <span>我的入住酒店 · 7晚全家大本营 (Hotel Basecamp)</span>
+        </div>
+        <button class="modal-close-trigger">✕</button>
+      </div>
+      <div class="modal-sheet-content">
+        
+        <!-- Hero Photo & Badge -->
+        <div class="hotel-modal-hero">
+          <img src="images/hotel_basecamp.jpg" alt="扬际·创汇酒店" class="hotel-modal-img" onerror="this.src='images/stop_01.jpg'">
+          <div class="hotel-status-tag">
+            <span class="hotel-status-dot"></span>
+            已确认预订 · 连住 7 晚 (12/21 – 12/28)
+          </div>
+        </div>
+
+        <!-- Hotel Name & Address -->
+        <div style="margin-top: 14px;">
+          <h3 class="hotel-title-h3">扬际·创汇酒店（重庆解放碑步行街店）</h3>
+          <div class="hotel-title-en">Yangji•Chuanghui Hotel (Chongqing Jiefangbei Walking Street)</div>
+        </div>
+
+        <!-- Specs Grid -->
+        <div class="hotel-specs-grid">
+          <div class="hotel-spec-box">
+            <div class="spec-label">入住时间 (Check-in)</div>
+            <div class="spec-val">2026年12月21日 14:00 之后</div>
+          </div>
+          <div class="hotel-spec-box">
+            <div class="spec-label">退房时间 (Check-out)</div>
+            <div class="spec-val">2026年12月28日 12:00 之前</div>
+          </div>
+          <div class="hotel-spec-box">
+            <div class="spec-label">预订房间 (Booking)</div>
+            <div class="spec-val">1 间房 · 连住 7 晚 · 最多 4 位成人</div>
+          </div>
+          <div class="hotel-spec-box">
+            <div class="spec-label">地理高程 (Elevation)</div>
+            <div class="spec-val">海拔 245m · 渝中半岛平坦核心</div>
+          </div>
+        </div>
+
+        <!-- Address Box with 1-Click Copy -->
+        <div class="hotel-address-banner">
+          <div class="addr-detail">
+            <div class="addr-cn">📍 <strong>地址：</strong>重庆市渝中区中华路1号创汇首座L1层 (紧邻较场口地铁站10A口)</div>
+            <div class="addr-en">L1, Chuanghui First Tower, No. 1 Zhonghua Road, Yuzhong District, Chongqing</div>
+          </div>
+          <button class="hotel-copy-btn" id="btnCopyHotelDidi">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>复制打车目的地</span>
+          </button>
+        </div>
+
+        <!-- Quick Links: Trip.com & Map Focus -->
+        <div class="hotel-links-row">
+          <a href="https://my.trip.com/hotels/chongqing-hotel-detail-31466837/yangji-chuanghui-hotel-chongqing-jiefangbei-walking-street/" target="_blank" rel="noopener noreferrer" class="hotel-action-pill trip">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>在 Trip.com 打开酒店详情</span>
+          </a>
+          <button class="hotel-action-pill focus" id="btnFocusHotelMap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+            <span>在地图上定位大本营</span>
+          </button>
+        </div>
+
+        <!-- Distances from Hotel -->
+        <div class="hotel-section-subhead">🚶 酒店出发 · 核心打卡点步行与车程距离</div>
+        <div class="hotel-dist-grid" id="hotelDistancesContainer">
+          <!-- Populated from CONFIRMED_HOTEL.distances_from_hotel -->
+        </div>
+
+        <!-- Basecamp Strategic Advantages -->
+        <div class="hotel-section-subhead" style="margin-top:16px;">💡 7晚连住大本营优势与全家实用贴士</div>
+        <div class="hotel-tips-wrapper" id="hotelTipsContainer">
+          <!-- Populated from CONFIRMED_HOTEL.tips -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Banner -->
+  <div class="toast-banner" id="toastMsg"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Master Itinerary Dataset -->
+  <script src="itinerary-data.js?v=11"></script>
+  
+  <!-- Refined Application Logic -->
+  <script src="app.js?v=11"></script>
+
+</body>
+</html>

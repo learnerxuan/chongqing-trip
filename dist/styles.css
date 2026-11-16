@@ -1,0 +1,1902 @@
+/* ==========================================================================
+   Chongqing Travel Companion - Premium Editorial Design System
+   Inspired by Apple Maps Guides, Airbnb & Notion Travel Journals
+   ========================================================================== */
+
+:root {
+  /* Typography & Neutral Colors */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "Noto Serif SC", serif;
+  
+  --ink-950: #09090b;
+  --ink-900: #18181b;
+  --ink-800: #27272a;
+  --ink-700: #3f3f46;
+  --ink-600: #52525b;
+  --ink-500: #71717a;
+  --ink-400: #a1a1aa;
+  --ink-300: #d4d4d8;
+  --ink-200: #e4e4e7;
+  --ink-100: #f4f4f5;
+  --ink-50:  #fafafa;
+  --surface: #ffffff;
+
+  /* Editorial Accents */
+  --chili-600: #e11d48; /* Signature Chongqing Crimson */
+  --chili-500: #f43f5e;
+  --chili-100: #ffe4e6;
+  --chili-50:  #fff1f2;
+
+  --amber-600: #d97706;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --emerald-600: #059669;
+  --emerald-100: #d1fae5;
+  --emerald-50:  #ecfdf5;
+
+  --sky-600: #0284c7;
+  --sky-100: #e0f2fe;
+  --sky-50:  #f0f9ff;
+
+  --indigo-600: #4f46e5;
+  --indigo-50:  #eef2ff;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-drawer: -8px 0 30px rgba(0, 0, 0, 0.12);
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--ink-50);
+  color: var(--ink-900);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Header - Clean, Minimalist & Prestigious
+   ========================================================================== */
+.site-header {
+  height: 60px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--ink-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-monogram {
+  width: 32px;
+  height: 32px;
+  background: var(--ink-950);
+  border-radius: var(--radius-sm);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.5px;
+}
+
+.brand-text h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-950);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-text .trip-dates {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-500);
+  background: var(--ink-100);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.brand-text .subtext {
+  font-size: 0.76rem;
+  color: var(--ink-500);
+  margin-top: 1px;
+}
+
+/* Header Middle - Scope Switcher Pill */
+.header-scope-toggle {
+  display: flex;
+  background: var(--ink-100);
+  padding: 3px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--ink-200);
+}
+
+.scope-pill {
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scope-pill:hover {
+  color: var(--ink-900);
+}
+
+.scope-pill.active {
+  background: var(--surface);
+  color: var(--ink-950);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Header Right - Tools */
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--ink-200);
+  background: var(--surface);
+  color: var(--ink-700);
+}
+
+.tool-btn:hover {
+  background: var(--ink-50);
+  border-color: var(--ink-300);
+  color: var(--ink-950);
+}
+
+.tool-btn.highlight {
+  background: var(--chili-50);
+  color: var(--chili-600);
+  border-color: var(--chili-100);
+}
+
+.tool-btn.highlight:hover {
+  background: #ffe4e6;
+  border-color: #fecdd3;
+}
+
+.tool-btn.primary {
+  background: var(--ink-950);
+  color: var(--surface);
+  border-color: var(--ink-950);
+}
+
+.tool-btn.primary:hover {
+  background: var(--ink-800);
+}
+
+/* ==========================================================================
+   Day Navigation Ribbon (Date Strip)
+   ========================================================================== */
+.ribbon-container {
+  height: 62px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--ink-200);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  overflow-x: auto;
+  gap: 8px;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+
+.ribbon-container::-webkit-scrollbar {
+  display: none;
+}
+
+.day-card-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ink-200);
+  background: var(--ink-50);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  min-width: 125px;
+}
+
+.day-card-pill:hover {
+  background: var(--ink-100);
+  border-color: var(--ink-300);
+}
+
+.day-card-pill .pill-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.day-card-pill .pill-day {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: -0.2px;
+}
+
+.day-card-pill .pill-date {
+  font-size: 0.7rem;
+  color: var(--ink-500);
+  font-weight: 500;
+}
+
+.day-card-pill .pill-theme {
+  font-size: 0.72rem;
+  color: var(--ink-600);
+  margin-top: 1px;
+  font-weight: 500;
+}
+
+.day-card-pill.active {
+  background: var(--ink-950);
+  border-color: var(--ink-950);
+  color: var(--surface);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.day-card-pill.active .pill-day {
+  color: var(--surface);
+}
+
+.day-card-pill.active .pill-date {
+  color: var(--ink-400);
+}
+
+.day-card-pill.active .pill-theme {
+  color: var(--ink-300);
+}
+
+/* ==========================================================================
+   Main View Layout (Sidebar & Map Canvas)
+   ========================================================================== */
+.app-content {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left Sidebar Journal */
+.sidebar-panel {
+  width: 450px;
+  background: var(--surface);
+  border-right: 1px solid var(--ink-200);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 500;
+  flex-shrink: 0;
+  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Day Header in Sidebar */
+.sidebar-header-box {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ink-200);
+  background: var(--surface);
+}
+
+.day-meta-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--chili-600);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.day-headline {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--ink-950);
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+}
+
+.day-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.73rem;
+  font-weight: 600;
+  background: var(--ink-100);
+  color: var(--ink-700);
+  border: 1px solid var(--ink-200);
+}
+
+.stat-chip.distance {
+  background: var(--sky-50);
+  color: var(--sky-600);
+  border-color: var(--sky-100);
+}
+
+.stat-chip.mom {
+  background: var(--emerald-50);
+  color: var(--emerald-600);
+  border-color: var(--emerald-100);
+}
+
+/* Scrollable Stops Timeline */
+.timeline-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.timeline-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.timeline-scroll::-webkit-scrollbar-thumb {
+  background: var(--ink-200);
+  border-radius: 4px;
+}
+
+/* Timeline Card */
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.stop-entry-card {
+  background: var(--surface);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.stop-entry-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ink-300);
+  box-shadow: var(--shadow-md);
+}
+
+.stop-entry-card.active {
+  border-color: var(--ink-950);
+  box-shadow: 0 0 0 2px var(--ink-950), var(--shadow-md);
+}
+
+.entry-photo {
+  height: 135px;
+  width: 100%;
+  position: relative;
+  background: var(--ink-900);
+  overflow: hidden;
+}
+
+.entry-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.stop-entry-card:hover .entry-photo img {
+  transform: scale(1.03);
+}
+
+.photo-badge-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--surface);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.photo-badge-category {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  color: var(--ink-900);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.entry-body {
+  padding: 13px 15px;
+}
+
+.entry-time {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--chili-600);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.entry-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink-950);
+  letter-spacing: -0.2px;
+  margin-bottom: 2px;
+}
+
+.entry-title-en {
+  font-size: 0.76rem;
+  color: var(--ink-500);
+  margin-bottom: 8px;
+}
+
+.entry-section-snippet {
+  font-size: 0.8rem;
+  color: var(--ink-700);
+  line-height: 1.5;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.entry-section-snippet strong {
+  color: var(--ink-900);
+}
+
+.entry-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 1px solid var(--ink-100);
+  font-size: 0.74rem;
+  color: var(--ink-500);
+}
+
+.entry-footer .link-cta {
+  font-weight: 600;
+  color: var(--ink-900);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Inter-stop Transit Step Spine */
+.transit-spine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: 2px 0 2px 24px;
+  border-left: 2px dashed var(--ink-300);
+  font-size: 0.74rem;
+  color: var(--ink-600);
+}
+
+.transit-spine-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  background: var(--ink-100);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  color: var(--ink-800);
+}
+
+/* ==========================================================================
+   Map Canvas & Floating Overlays
+   ========================================================================== */
+.map-canvas-container {
+  flex: 1;
+  position: relative;
+  background: var(--ink-100);
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* Floating Clean Controls on Map */
+.map-controls-floating {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 500;
+  display: flex;
+  gap: 8px;
+}
+
+.map-control-chip {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--ink-200);
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-800);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.map-control-chip:hover {
+  background: var(--surface);
+  border-color: var(--ink-300);
+  color: var(--ink-950);
+}
+
+.map-control-chip.active {
+  background: var(--ink-950);
+  color: var(--surface);
+  border-color: var(--ink-950);
+}
+
+/* Day Travel Stats HUD (Top Right on Map) */
+.map-stats-hud {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 500;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-md);
+  width: 270px;
+}
+
+.hud-header {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-950);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--ink-600);
+  padding: 3px 0;
+  border-bottom: 1px solid var(--ink-100);
+}
+
+.hud-item:last-child {
+  border-bottom: none;
+}
+
+.hud-item-val {
+  font-weight: 600;
+  color: var(--ink-950);
+}
+
+/* ==========================================================================
+   Map Markers & Polylines Styling
+   ========================================================================== */
+.editorial-map-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ink-950);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: -0.5px;
+  border: 2px solid var(--surface);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  pointer-events: auto;
+}
+
+.editorial-map-pin:hover {
+  transform: scale(1.18);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  z-index: 1000 !important;
+}
+
+.editorial-map-pin.active {
+  transform: scale(1.25);
+  background: var(--chili-600);
+  border-color: var(--surface);
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.3), 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Transit Badge on Map Line */
+.map-route-distance-pill {
+  background: var(--surface);
+  border: 1px solid var(--ink-300);
+  color: var(--ink-900);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Details Drawer (Slide-Over Panel)
+   ========================================================================== */
+.drawer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.35);
+  backdrop-filter: blur(3px);
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-scrim.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  max-width: 100vw;
+  background: var(--surface);
+  z-index: 1300;
+  box-shadow: var(--shadow-drawer);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-drawer.visible {
+  transform: translateX(0);
+}
+
+.drawer-hero {
+  height: 240px;
+  position: relative;
+  background: var(--ink-950);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.drawer-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.drawer-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9, 9, 11, 0.88) 0%, rgba(9, 9, 11, 0.25) 55%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 24px;
+  color: var(--surface);
+  pointer-events: none;
+}
+
+.drawer-hero-scrim * {
+  pointer-events: auto;
+}
+
+.drawer-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(9, 9, 11, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.15s ease;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  user-select: none;
+}
+
+.drawer-close-icon:hover {
+  background: var(--ink-950);
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.drawer-close-icon:active {
+  transform: scale(0.95);
+}
+
+.drawer-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.drawer-index-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--chili-600);
+  color: var(--surface);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.drawer-main-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+
+.drawer-sub-title {
+  font-size: 0.82rem;
+  color: var(--ink-300);
+  margin-top: 2px;
+}
+
+.drawer-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.drawer-scroll-body::-webkit-scrollbar {
+  width: 5px;
+}
+.drawer-scroll-body::-webkit-scrollbar-thumb {
+  background: var(--ink-200);
+  border-radius: 4px;
+}
+
+/* Clean Editorial Content Blocks */
+.info-section-card {
+  background: var(--surface);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  padding: 15px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-500);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-label .indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-400);
+}
+
+.section-body-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-800);
+}
+
+.info-section-card.mom-highlight {
+  background: var(--emerald-50);
+  border-color: var(--emerald-100);
+}
+
+.info-section-card.mom-highlight .section-label {
+  color: var(--emerald-600);
+}
+
+.info-section-card.mom-highlight .indicator-dot {
+  background: var(--emerald-600);
+}
+
+.info-section-card.food-highlight {
+  background: var(--amber-50);
+  border-color: var(--amber-100);
+}
+
+.info-section-card.food-highlight .section-label {
+  color: var(--amber-600);
+}
+
+.info-section-card.food-highlight .indicator-dot {
+  background: var(--amber-600);
+}
+
+/* Drawer Bottom Sticky Controls */
+.drawer-footer-actions {
+  padding: 14px 20px;
+  background: var(--surface);
+  border-top: 1px solid var(--ink-200);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--ink-200);
+  background: var(--surface);
+  color: var(--ink-800);
+  text-decoration: none;
+}
+
+.action-btn:hover {
+  background: var(--ink-100);
+  border-color: var(--ink-300);
+}
+
+.action-btn.primary {
+  background: var(--ink-950);
+  color: var(--surface);
+  border-color: var(--ink-950);
+}
+
+.action-btn.primary:hover {
+  background: var(--ink-800);
+}
+
+/* ==========================================================================
+   Modals (Distance Matrix & Mom Care Guide)
+   ========================================================================== */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-scrim.visible {
+  display: flex;
+}
+
+.modal-sheet {
+  background: var(--surface);
+  width: 780px;
+  max-width: 95vw;
+  max-height: 85vh;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-sheet-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--ink-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+}
+
+.modal-sheet-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink-950);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close-trigger {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--ink-500);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.modal-close-trigger:hover {
+  color: var(--ink-950);
+}
+
+.modal-sheet-content {
+  padding: 24px;
+  overflow-y: auto;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Spatial Zone Cards in Modal */
+.spatial-zones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.zone-card {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ink-200);
+  background: var(--ink-50);
+}
+
+.zone-card-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--ink-950);
+  margin-bottom: 4px;
+}
+
+.zone-card-desc {
+  font-size: 0.76rem;
+  color: var(--ink-600);
+  line-height: 1.45;
+}
+
+/* Matrix Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 12px;
+}
+
+.data-table th, .data-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--ink-200);
+}
+
+.data-table th {
+  background: var(--ink-100);
+  color: var(--ink-700);
+  font-weight: 700;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.data-table tr:hover td {
+  background: var(--ink-50);
+}
+
+/* Toast Message */
+.toast-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink-950);
+  color: var(--surface);
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-float);
+  z-index: 9999;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast-banner.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Mobile Dual-View Switcher (Cards List vs Map)
+   ========================================================================== */
+.mobile-view-tabs {
+  display: none;
+}
+
+.floating-view-pill {
+  display: none;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 900px) {
+  .site-header {
+    height: 52px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .brand-wrapper {
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .brand-monogram {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .brand-text h1 {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .brand-text .trip-dates {
+    font-size: 0.68rem;
+    padding: 1px 5px;
+    white-space: nowrap;
+  }
+
+  .brand-text .subtext {
+    display: none;
+  }
+
+  .header-scope-toggle {
+    display: none;
+  }
+
+  .header-tools {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  /* Simplify mobile header: hide less urgent buttons so title never wraps vertically */
+  #btnOpenDistanceModal, #btnLocateMe, #btnOpenMomGuide, #btnMobileSidebarToggle {
+    display: none !important;
+  }
+
+  .tool-btn .btn-label {
+    display: none;
+  }
+
+  .tool-btn.hotel-pill-btn .btn-label {
+    display: inline !important;
+    font-size: 0.76rem;
+  }
+
+  /* Mobile Tabs Bar (Below Ribbon) */
+  .mobile-view-tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--ink-200);
+    padding: 6px 12px;
+    gap: 8px;
+    z-index: 950;
+    flex-shrink: 0;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--ink-200);
+    background: var(--ink-50);
+    color: var(--ink-700);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-tab-btn.active {
+    background: var(--ink-950);
+    color: #ffffff;
+    border-color: var(--ink-950);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+
+  .mobile-tab-btn .tab-badge {
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    font-weight: 800;
+  }
+
+  .mobile-tab-btn.active .tab-badge {
+    background: #ffffff;
+    color: #e11d48;
+  }
+
+  /* App Content on Mobile */
+  .app-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    height: calc(100vh - 120px);
+  }
+
+  /* Mode 1: LIST MODE (Default on Mobile) */
+  body.mobile-view-list .sidebar-panel {
+    display: flex !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    box-shadow: none !important;
+    overflow-y: auto !important;
+    z-index: 10 !important;
+    padding-bottom: 80px; /* Space for floating pill */
+  }
+
+  body.mobile-view-list .map-wrapper {
+    display: none !important;
+  }
+
+  /* Mode 2: MAP MODE */
+  body.mobile-view-map .sidebar-panel {
+    display: none !important;
+  }
+
+  body.mobile-view-map .map-wrapper {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 !important;
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  /* Floating Quick-Switch Pill */
+  .floating-view-pill {
+    display: flex;
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink-950);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: var(--radius-full);
+    padding: 11px 22px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+    font-size: 0.9rem;
+    font-weight: 700;
+    align-items: center;
+    gap: 8px;
+    z-index: 999;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .floating-view-pill:active {
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  .slide-drawer {
+    width: 100vw !important;
+    z-index: 2000 !important;
+  }
+
+  .map-stats-hud {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Hotel Basecamp Custom Styles
+   ========================================================================== */
+.tool-btn.hotel-pill-btn {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+  font-weight: 700;
+}
+
+.tool-btn.hotel-pill-btn:hover {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.hotel-pin-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.hotel-map-pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.hotel-pin-badge {
+  background: #d97706;
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.45);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hotel-map-pin:hover .hotel-pin-badge {
+  transform: scale(1.1);
+  background: #b45309;
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.6);
+}
+
+.hotel-pin-pulse {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: var(--radius-full);
+  border: 2px solid #f59e0b;
+  animation: hotelPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes hotelPulse {
+  0% { transform: scale(0.95); opacity: 0.9; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.hotel-modal-hero {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--ink-200);
+}
+
+.hotel-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hotel-status-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fef08a;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(254, 240, 138, 0.3);
+}
+
+.hotel-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.hotel-title-h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink-950);
+  line-height: 1.3;
+}
+
+.hotel-title-en {
+  font-size: 0.78rem;
+  color: var(--ink-500);
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+
+.hotel-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.hotel-spec-box {
+  background: #f8fafc;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.hotel-spec-box .spec-label {
+  font-size: 0.7rem;
+  color: var(--ink-500);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.hotel-spec-box .spec-val {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-top: 2px;
+}
+
+.hotel-address-banner {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hotel-address-banner .addr-cn {
+  font-size: 0.83rem;
+  color: #78350f;
+}
+
+.hotel-address-banner .addr-en {
+  font-size: 0.72rem;
+  color: #92400e;
+  margin-top: 2px;
+}
+
+.hotel-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #d97706;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.hotel-copy-btn:hover {
+  background: #b45309;
+}
+
+.hotel-links-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hotel-action-pill {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.hotel-action-pill.trip {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.hotel-action-pill.trip:hover {
+  background: #0369a1;
+}
+
+.hotel-action-pill.focus {
+  background: var(--ink-100);
+  color: var(--ink-800);
+  border-color: var(--ink-300);
+}
+
+.hotel-action-pill.focus:hover {
+  background: var(--ink-200);
+  color: var(--ink-950);
+}
+
+.hotel-section-subhead {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--ink-900);
+  margin-bottom: 8px;
+}
+
+.hotel-dist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.hotel-dist-card {
+  background: var(--surface);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+}
+
+.hotel-dist-card .target-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.hotel-dist-card .target-metrics {
+  font-size: 0.76rem;
+  color: #0284c7;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.hotel-dist-card .target-note {
+  font-size: 0.72rem;
+  color: var(--ink-500);
+  margin-top: 1px;
+}
+
+.hotel-tips-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hotel-tip-box {
+  background: #f4f4f5;
+  border-left: 3px solid #d97706;
+  padding: 9px 14px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8rem;
+  color: var(--ink-700);
+  line-height: 1.45;
+}
+
+@media (max-width: 600px) {
+  .hotel-specs-grid, .hotel-dist-grid {
+    grid-template-columns: 1fr;
+  }
+  .hotel-address-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hotel-links-row {
+    flex-direction: column;
+  }
+}
+
+/* ==========================================================================
+   Permanent Hotel Dock & Stop Distance Indicators
+   ========================================================================== */
+.permanent-hotel-dock {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin: 14px 16px 4px 16px;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08);
+  flex-shrink: 0;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.permanent-hotel-dock:hover {
+  border-color: #fcd34d;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.14);
+}
+
+.dock-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.dock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #d97706;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.dock-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a7f3d0;
+  box-shadow: 0 0 4px #10b981;
+}
+
+.dock-sub-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.dock-hotel-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #78350f;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.dock-hotel-addr {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  color: #92400e;
+  line-height: 1.3;
+  margin-bottom: 9px;
+  cursor: pointer;
+}
+
+.dock-hotel-addr:hover {
+  color: #78350f;
+  text-decoration: underline;
+}
+
+.dock-addr-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dock-actions-row {
+  display: flex;
+  gap: 6px;
+}
+
+.dock-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.dock-action-btn.copy {
+  background: #d97706;
+  color: #ffffff;
+}
+
+.dock-action-btn.copy:hover {
+  background: #b45309;
+}
+
+.dock-action-btn.locate {
+  background: #ffffff;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.dock-action-btn.locate:hover {
+  background: #fffbeb;
+  border-color: #f59e0b;
+}
+
+.dock-action-btn.info {
+  background: transparent;
+  color: #b45309;
+  padding-right: 4px;
+}
+
+.dock-action-btn.info:hover {
+  color: #78350f;
+  text-decoration: underline;
+}
+
+/* Stop Card - Hotel Distance Pill */
+.entry-hotel-dist-pill {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  margin: 6px 0 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.74rem;
+}
+
+.dist-pill-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #92400e;
+}
+
+.dist-pill-left .dist-tag {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.dist-pill-left .dist-km {
+  font-weight: 800;
+  color: #78350f;
+}
+
+.dist-pill-right {
+  font-weight: 700;
+  color: #b45309;
+  background: rgba(254, 243, 199, 0.9);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+/* Drawer Hotel Commute Card */
+.drawer-hotel-commute-card {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 10px;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.08);
+}
+
+.dhc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.dhc-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #78350f;
+}
+
+.dhc-badge {
+  background: #d97706;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.dhc-stats {
+  background: #ffffff;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.dhc-stat-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.dhc-dist-val {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #92400e;
+}
+
+.dhc-transit-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #b45309;
+  background: #fffbeb;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid #fde68a;
+}
+
+.dhc-note {
+  font-size: 0.74rem;
+  color: #71717a;
+  line-height: 1.4;
+}
+
+.dhc-address-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.73rem;
+  color: #92400e;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.dhc-address-row:hover {
+  color: #78350f;
+  text-decoration: underline;
+}
+
+/* Map Hotel Distance Ray Midpoint Pill */
+.hotel-distance-ray-pill {
+  background: #d97706;
+  color: #ffffff;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid #ffffff;
+  pointer-events: none;
+}
