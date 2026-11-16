@@ -1253,9 +1253,9 @@ body {
     height: calc(100vh - 120px);
   }
 
-  /* Mode 1: LIST MODE (Default on Mobile) */
+  /* Mode 1: LIST MODE (Default on Mobile) - Unified Single Scroll Stream */
   body.mobile-view-list .sidebar-panel {
-    display: flex !important;
+    display: block !important; /* Block layout so hotel dock, day summary and cards form a single continuous scroll feed */
     position: static !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -1263,8 +1263,29 @@ body {
     transform: none !important;
     box-shadow: none !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
     z-index: 10 !important;
-    padding-bottom: 80px; /* Space for floating pill */
+    padding-bottom: 90px !important; /* Generous space for bottom floating pill */
+  }
+
+  body.mobile-view-list .permanent-hotel-dock {
+    flex-shrink: 0 !important;
+    margin: 10px 12px 6px 12px !important;
+    padding: 10px 12px !important;
+  }
+
+  body.mobile-view-list .sidebar-header-box {
+    flex-shrink: 0 !important;
+    padding: 12px 14px !important;
+  }
+
+  body.mobile-view-list .timeline-scroll {
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    flex: none !important;
+    height: auto !important;
+    padding: 8px 12px !important;
   }
 
   body.mobile-view-list .map-wrapper {

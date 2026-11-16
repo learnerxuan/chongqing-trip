@@ -21,8 +21,8 @@
   <meta name="apple-mobile-web-app-title" content="重庆旅游地图">
 
   <script>
-    // Force cache invalidation to ensure user sees the new mobile view switcher immediately
-    const APP_BUILD_VER = '20261116_v31_mobile_list_map_toggle';
+    // Force cache invalidation to ensure user sees the unified single scroll feed
+    const APP_BUILD_VER = '20261116_v32_unified_mobile_scroll';
     if (localStorage.getItem('cq_trip_build') !== APP_BUILD_VER) {
       localStorage.setItem('cq_trip_build', APP_BUILD_VER);
       if ('caches' in window) {
@@ -39,7 +39,7 @@
   </script>
 
   <!-- Clean Custom Design System -->
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
 <body>
 
@@ -642,10 +642,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Master Itinerary Dataset -->
-  <script src="itinerary-data.js?v=11"></script>
+  <script src="itinerary-data.js?v=12"></script>
   
   <!-- Refined Application Logic -->
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 
 </body>
 </html>
