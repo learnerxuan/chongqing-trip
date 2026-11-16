@@ -1,0 +1,7 @@
+# Ignored files
+*.py
+*.bat
+chongqing-trip-pwa.zip
+.wrangler/
+node_modules/
+.vscode/
