@@ -100,6 +100,19 @@ function renderDay(day) {
   state.routesLayer.clearLayers();
   state.hotelRayLayer?.clearLayers();
 
+  // Reset scroll to top whenever switching days
+  const sidebar = document.getElementById('itinerarySidebar');
+  if (sidebar) {
+    sidebar.scrollTop = 0;
+    sidebar.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }
+  const stopList = document.getElementById('sidebarStopList');
+  if (stopList) {
+    stopList.scrollTop = 0;
+    stopList.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
   // Update ribbon active tab
   document.querySelectorAll('.day-card-pill').forEach(pill => {
     if (pill.dataset.day === String(day)) {
