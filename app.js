@@ -100,7 +100,7 @@ function renderDay(day) {
   state.routesLayer.clearLayers();
   state.hotelRayLayer?.clearLayers();
 
-  // Reset scroll to top whenever switching days
+  // Reset scroll to top & prevent any horizontal window shift
   const sidebar = document.getElementById('itinerarySidebar');
   if (sidebar) {
     sidebar.scrollTop = 0;
@@ -112,12 +112,21 @@ function renderDay(day) {
     stopList.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  if (document.documentElement) document.documentElement.scrollLeft = 0;
+  if (document.body) document.body.scrollLeft = 0;
 
-  // Update ribbon active tab
+  // Update ribbon active tab & scroll ONLY the ribbon element itself (never scroll window)
+  const ribbon = document.getElementById('daysRibbon');
   document.querySelectorAll('.day-card-pill').forEach(pill => {
     if (pill.dataset.day === String(day)) {
       pill.classList.add('active');
-      pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      if (ribbon) {
+        const pillLeft = pill.offsetLeft;
+        const pillWidth = pill.offsetWidth;
+        const ribbonWidth = ribbon.clientWidth;
+        const targetScrollLeft = Math.max(0, pillLeft - (ribbonWidth / 2) + (pillWidth / 2));
+        ribbon.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+      }
     } else {
       pill.classList.remove('active');
     }
