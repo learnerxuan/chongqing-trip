@@ -1338,9 +1338,86 @@ body {
     transform: translateX(-50%) scale(0.95);
   }
 
+  /* Mobile Details Drawer - Fullscreen Single Scroll Stream */
+  .drawer-scrim {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2900 !important;
+  }
+
   .slide-drawer {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
     width: 100vw !important;
-    z-index: 2000 !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    z-index: 3000 !important;
+    background: var(--surface) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .slide-drawer.visible {
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  /* The hero image is in the stream, so it scrolls away naturally as user reads down */
+  .drawer-hero {
+    height: 220px !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  /* Prominent floating close button remains accessible at top right */
+  .drawer-close-icon {
+    position: fixed !important;
+    top: 14px !important;
+    right: 14px !important;
+    width: 38px !important;
+    height: 38px !important;
+    z-index: 3100 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Content area is not a nested scroller; it naturally extends down */
+  .drawer-scroll-body {
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    flex: 1 0 auto !important;
+    height: auto !important;
+    padding: 16px 14px 24px 14px !important;
+  }
+
+  /* Bottom actions stick cleanly to the bottom of the drawer view */
+  .drawer-footer-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 3050 !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-top: 1px solid var(--ink-200) !important;
+    padding: 10px 12px max(12px, env(safe-area-inset-bottom)) 12px !important;
+    margin-top: auto !important;
+    display: flex !important;
+    gap: 8px !important;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08) !important;
   }
 
   .map-stats-hud {

@@ -527,6 +527,18 @@ function selectStop(stopId) {
 }
 
 function openDrawer(stop) {
+  // Ensure drawer scrolls back to top when opened or switching stops
+  const drawer = document.getElementById('detailsDrawer');
+  if (drawer) {
+    drawer.scrollTop = 0;
+    drawer.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }
+  const scrollBody = drawer ? drawer.querySelector('.drawer-scroll-body') : null;
+  if (scrollBody) {
+    scrollBody.scrollTop = 0;
+    scrollBody.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }
+
   document.getElementById('drawerImg').src = stop.image;
   document.getElementById('drawerPageBadge').innerText = `站点 ${String(stop.page).padStart(2, '0')}/${ITINERARY_STOPS.length} · Day ${stop.day}`;
   document.getElementById('drawerDayCategoryBadge').innerText = stop.category_label.split('/')[0].trim();
