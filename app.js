@@ -593,9 +593,6 @@ function openDrawer(stop) {
     });
   };
 
-  // Nav link
-  document.getElementById('btnOpenNav').href = `https://www.google.com/maps/search/?api=1&query=${stop.lat},${stop.lng}`;
-
   // Next / Prev buttons
   const prevBtn = document.getElementById('btnPrevStop');
   const nextBtn = document.getElementById('btnNextStop');

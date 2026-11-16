@@ -22,7 +22,7 @@
 
   <script>
     // Force cache invalidation to ensure user sees Day 08 horizontal scroll fix
-    const APP_BUILD_VER = '20261116_v35_day8_scroll_fix';
+    const APP_BUILD_VER = '20261116_v36_remove_nav_btn';
     if (localStorage.getItem('cq_trip_build') !== APP_BUILD_VER) {
       localStorage.setItem('cq_trip_build', APP_BUILD_VER);
       if ('caches' in window) {
@@ -39,7 +39,7 @@
   </script>
 
   <!-- Clean Custom Design System -->
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
 
@@ -295,13 +295,9 @@
           <span>上一站</span>
         </button>
         <button class="action-btn primary" id="btnCopyDidi">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           <span>复制打车地址</span>
         </button>
-        <a class="action-btn" id="btnOpenNav" target="_blank" rel="noopener noreferrer">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-          <span>导航</span>
-        </a>
         <button class="action-btn" id="btnNextStop">
           <span>下一站</span>
         </button>
@@ -642,10 +638,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Master Itinerary Dataset -->
-  <script src="itinerary-data.js?v=15"></script>
+  <script src="itinerary-data.js?v=16"></script>
   
   <!-- Refined Application Logic -->
-  <script src="app.js?v=15"></script>
+  <script src="app.js?v=16"></script>
 
 </body>
 </html>

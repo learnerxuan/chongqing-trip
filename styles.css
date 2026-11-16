@@ -969,9 +969,12 @@ body {
 }
 
 .action-btn.primary {
+  flex: 1.8;
   background: var(--ink-950);
   color: var(--surface);
   border-color: var(--ink-950);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .action-btn.primary:hover {

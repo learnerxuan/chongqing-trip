@@ -3,7 +3,7 @@
  * Ensures the travel guide and all 19 attraction photos work completely offline in China!
  */
 
-const CACHE_NAME = 'chongqing-trip-v15';
+const CACHE_NAME = 'chongqing-trip-v16';
 
 const STATIC_ASSETS = [
   './',
